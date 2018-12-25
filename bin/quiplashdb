@@ -26,8 +26,6 @@ case $1 in
     
     echo "+ sqlite3 var/quiplash.sqlite3 < sql/schema.sql"
     sqlite3 var/quiplash.sqlite3 < sql/schema.sql
-    echo "+ sqlite3 var/quiplash.sqlite3 < sql/data.sql"
-    sqlite3 var/quiplash.sqlite3 < sql/data.sql
     ;;
 
   "destroy")
@@ -40,8 +38,6 @@ case $1 in
     rm var/quiplash.sqlite3
     echo "+ sqlite3 var/quiplash.sqlite3 < sql/schema.sql"
     sqlite3 var/quiplash.sqlite3 < sql/schema.sql
-    echo "+ sqlite3 var/quiplash.sqlite3 < sql/data.sql"
-    sqlite3 var/quiplash.sqlite3 < sql/data.sql
     ;;
 
   "dump")

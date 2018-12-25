@@ -28,7 +28,7 @@ case $1 in
 
     echo "+ export FLASK_APP=quiplash"
     export FLASK_APP=quiplash
-    echo "+ export MEDIA_SETTINGS=config.py"
+    echo "+ export QUIPLASH_SETTINGS=config.py"
     export QUIPLASH_SETTINGS=config.py
     echo "+ flask run --host 0.0.0.0 --port 8000"
     flask run --host 0.0.0.0 --port 8000
