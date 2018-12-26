@@ -4,7 +4,8 @@ class Host extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { 
+    this.state = {
+      players: [],
     };
 
   }
@@ -16,7 +17,13 @@ class Host extends React.Component {
   render() {
     return (
       <div className="host">
-        <p>Host</p>
+        <p>Waiting for all players...</p>
+        <ul>
+          {
+          this.props.players.map((player, index) =>
+            <li key={index}><p>{player.name}</p></li>)
+            }
+        </ul>
       </div>
     );
   }

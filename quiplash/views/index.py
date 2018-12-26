@@ -6,7 +6,6 @@ URLs include:
 """
 import flask
 import quiplash
-import flask
 
 
 @quiplash.app.route('/', methods=['GET', 'POST'])

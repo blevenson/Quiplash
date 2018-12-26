@@ -6,9 +6,11 @@
 </head>
 
 <body>
-	<!-- React Feed -->
-	<div id="reactEntry">Loading feed ...</div>
-	  <!-- Load JavaScript -->
-	  <script type="text/javascript" src="{{ url_for('static', filename='js/bundle.js') }}"></script>
+    <div class="splashScreen">
+        <img id="logoImg" src="/static/images/logo.png" alt="logo">
+        <p id="logoText">"Quiplash"</p>
+        <a href="/join">Join Game</a>
+        <a href="/host">Host Game</a>
+    </div>
 </body>
 </html>

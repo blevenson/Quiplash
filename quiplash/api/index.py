@@ -14,7 +14,9 @@ def get_services():
     """
 
     context = {
-        "url": "/api/v1/"
+        "url": "/api/v1/",
+        "players": "/api/v1/players",
+        "questions": "/api/v1/questions"
     }
 
     return flask.jsonify(**context)
