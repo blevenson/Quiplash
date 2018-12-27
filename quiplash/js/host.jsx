@@ -107,7 +107,7 @@ class Host extends React.Component {
           <ul>
             {
             this.state.players.map((player, index) =>
-              <li key={index}><p>{player.name}</p></li>)
+              <li key={index}><p>{player.name}: {player.points}</p></li>)
               }
           </ul>
 

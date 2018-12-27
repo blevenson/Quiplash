@@ -12,3 +12,9 @@ CREATE TABLE questions(
     name1 VARCHAR(20) NOT NULL,
     name2 VARCHAR(20) NOT NULL
 );
+
+CREATE TABLE votes(
+    name VARCHAR(20) NOT NULL,
+    questionid INTEGER NOT NULL,
+    voteA INTEGER NOT NULL,
+);
