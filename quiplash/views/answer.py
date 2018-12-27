@@ -31,7 +31,17 @@ def show_answer_form():
 
         return flask.redirect('/play')
 
-    context['q1'] = "Question 1"
-    context['q2'] = "Question 2"
+    cur = quiplash.model.get_db().cursor()
+
+    cur.execute(
+        ('SELECT * FROM questions WHERE name1 = \'%s\' or name2 = \'%s\'') % (flask.session['username'], flask.session['username']))
+    questions = cur.fetchall()
+
+    # Store question answers
+    cur.execute(('SELECT * FROM questions'))
+    output = cur.fetchall()
+
+    context['q1'] = questions[0]['question']
+    context['q2'] = questions[1]['question']
 
     return flask.render_template("answer.html", **context)

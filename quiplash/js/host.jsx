@@ -30,6 +30,12 @@ class Host extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       credentials: 'same-origin',
     })
+
+    fetch('/api/v1/resetquestions', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+    })
   }
 
   getPlayers() {
@@ -78,16 +84,16 @@ class Host extends React.Component {
       credentials: 'same-origin',
     })
 
-    this.setState(prevState => ({
-          stage: 1,
-          answeredPlayers: [],
-        }));
-
     fetch('/api/v1/assignquestions', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'same-origin',
     })
+
+    this.setState(prevState => ({
+          stage: 1,
+          answeredPlayers: [],
+        }));
 
   }
 

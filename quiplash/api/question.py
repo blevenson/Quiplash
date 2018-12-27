@@ -92,3 +92,19 @@ def assign_questions():
     context["assignments"] = output
 
     return flask.jsonify(**context)
+
+
+@quiplash.app.route('/api/v1/resetquestions', methods=["GET"])
+def reset_questions():
+    """Reset assigned questions
+    """
+
+    context = {
+        "url": "/api/v1/resetquestions",
+    }
+
+    cur = quiplash.model.get_db().cursor()
+
+    cur.execute(('DELETE FROM questions'))
+
+    return flask.jsonify(**context)
