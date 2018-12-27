@@ -12,6 +12,7 @@ class Host extends React.Component {
     };
 
     this.handleStartButton = this.handleStartButton.bind(this);
+    this.handleResetPlayers = this.handleResetPlayers.bind(this);
 
   }
 
@@ -21,6 +22,14 @@ class Host extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
+  }
+
+  handleResetPlayers() {
+    fetch('/api/v1/resetplayers', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+    })
   }
 
   getPlayers() {
@@ -92,7 +101,9 @@ class Host extends React.Component {
 
         { this.state.players.length > 2 && 
           <button onClick={this.handleStartButton}>Start</button>
-        }</div>);
+        }
+        <button onClick={this.handleResetPlayers}>Reset</button>
+        </div>);
         break;
 
       case 1:

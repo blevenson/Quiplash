@@ -50,3 +50,26 @@ def reset_answers():
     context["players"] = output
 
     return flask.jsonify(**context)
+
+
+@quiplash.app.route('/api/v1/resetplayers', methods=["GET"])
+def reset_players():
+    """Remove all players.
+    """
+
+    context = {}
+
+    # url
+    context["url"] = flask.request.path
+
+    # Database
+    db = quiplash.model.get_db()
+
+    cur = db.execute(('DELETE FROM players'))
+
+    cur = db.execute("SELECT * FROM players",)
+    output = cur.fetchall()
+
+    context["players"] = output
+
+    return flask.jsonify(**context)

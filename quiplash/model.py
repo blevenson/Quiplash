@@ -26,6 +26,18 @@ def get_db():
     return flask.g.sqlite_db
 
 
+def check_exists(connection, name):
+    """Check if name exists."""
+    # Check if name exists
+    check_if_exists = connection.execute(
+        "SELECT 1 FROM players WHERE name = ? ",
+        (name,)
+    )
+    exists = check_if_exists.fetchone()
+
+    return (exists is not None)
+
+
 @quiplash.app.teardown_appcontext
 def close_db(error):
     # pylint: disable=unused-argument

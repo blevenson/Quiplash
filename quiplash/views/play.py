@@ -27,15 +27,17 @@ def show_join():
     context = {
     }
 
+    connection = quiplash.model.get_db()
+
     # Check is user already joined game
-    if 'username' in flask.session:
+    if 'username' in flask.session and quiplash.model.check_exists(connection, flask.session['username']):
         return flask.redirect('/play')
 
     if flask.request.method == 'POST':
         # Get Username and password
         username_input = flask.request.form['username']
 
-        cursor = quiplash.model.get_db().cursor()
+        cursor = connection.cursor()
 
         cursor.execute('INSERT INTO players(name, points, ans1, ans2) VALUES(\'' +
                        username_input + '\', 0, \'\',\'\')',)
