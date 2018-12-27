@@ -83,6 +83,12 @@ class Host extends React.Component {
           answeredPlayers: [],
         }));
 
+    fetch('/api/v1/assignquestions', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+    })
+
   }
 
 

@@ -5,3 +5,10 @@ CREATE TABLE players(
     ans1 VARCHAR(1024) NOT NULL,
     ans2 VARCHAR(1024) NOT NULL
 );
+
+CREATE TABLE questions(
+    questionid INTEGER PRIMARY KEY AUTOINCREMENT,
+    question VARCHAR(1024) NOT NULL,
+    name1 VARCHAR(20) NOT NULL,
+    name2 VARCHAR(20) NOT NULL
+);
