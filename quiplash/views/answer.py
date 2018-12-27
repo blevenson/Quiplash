@@ -29,7 +29,7 @@ def show_answer_form():
         connection.execute(('UPDATE players SET ans1 = \'%s\', ans2 = \'%s\' WHERE name = \'%s\'')
                            % (ans1, ans2, flask.session['username']))
 
-        return flask.redirect('/play')
+        return flask.redirect('/vote')
 
     cur = quiplash.model.get_db().cursor()
 
