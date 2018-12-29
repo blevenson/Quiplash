@@ -61,22 +61,58 @@ def show_vote():
         return flask.redirect('/')
 
     if flask.request.method == 'POST':
-        # Get vote, 1 or 2
-        username_input = flask.request.form['username']
 
-        cursor = connection.cursor()
+        for question, vote in flask.request.form.items():
+            if question == 'submit':
+                continue
 
-        cursor.execute('INSERT INTO players(name, points, ans1, ans2) VALUES(\'' +
-                       username_input + '\', 0, \'\',\'\')',)
+            cursor = connection.cursor()
 
-        flask.session['username'] = username_input
+            cursor.execute(
+                ('INSERT INTO votes(name, questionid, playerid) VALUES(\'%s\', %s, %s)') % (flask.session['username'], question, vote),)
 
-        return flask.redirect('/play')
+        return flask.redirect('/')
 
-    context['id1'] = "player1id"
-    context['id2'] = "player2id"
+    cursor = connection.cursor()
 
-    context['ans1'] = "player1ans"
-    context['ans2'] = "player2ans"
+    # Check if all players have answered
+    context['waitingToVote'] = False
+    for player in connection.cursor().execute("SELECT * FROM players"):
+        if player['ans1'] == "" and player['ans2'] == "":
+            context['waitingToVote'] = True
+
+    questions = []
+
+    # Used to check if use ans1 or ans2
+    playersAnswered = {}
+
+    for row in connection.cursor().execute("SELECT * FROM questions"):
+        newQuestion = {}
+
+        cursor.execute('SELECT * FROM players WHERE name = ?',
+                       (row['name1'],))
+        player1 = cursor.fetchone()
+        cursor.execute('SELECT * FROM players WHERE name = ?',
+                       (row['name2'],))
+        player2 = cursor.fetchone()
+
+        newQuestion["question"] = row['question']
+        newQuestion['questionId'] = row['questionid']
+        newQuestion["playerId1"] = player1['playerid']
+        newQuestion["playerId2"] = player2['playerid']
+
+        newQuestion["ans1"] = player1['ans1'] if row[
+            'name1'] not in playersAnswered else player1['ans2']
+        newQuestion["ans2"] = player2['ans1'] if row[
+            'name2'] not in playersAnswered else player2['ans2']
+
+        playersAnswered[row['name1']] = True
+        playersAnswered[row['name2']] = True
+
+        # Can't vote on own answer
+        if row['name1'] != flask.session['username'] and row['name2'] != flask.session['username']:
+            questions.append(newQuestion)
+
+    context['questions'] = questions
 
     return flask.render_template("vote.html", **context)

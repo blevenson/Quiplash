@@ -67,6 +67,7 @@ def assign_questions():
     cur = quiplash.model.get_db().cursor()
 
     cur.execute(('DELETE FROM questions'))
+    cur.execute(('DELETE FROM votes'))
 
     cur.execute(('SELECT * FROM players'))
     players = cur.fetchall()
@@ -81,6 +82,7 @@ def assign_questions():
     for i, q in enumerate(questions):
         n1 = players[(i - 1) % len(players)]['name']
         n2 = players[i]['name']
+
         ques = q.replace("'", "`").replace("\\", "").replace("\"", "")
         cur.execute(
             (('INSERT INTO questions (question, name1, name2) VALUES (\'%s\', \'%s\', \'%s\')') % (ques, n1, n2)))

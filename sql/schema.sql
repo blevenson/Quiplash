@@ -16,5 +16,5 @@ CREATE TABLE questions(
 CREATE TABLE votes(
     name VARCHAR(20) NOT NULL,
     questionid INTEGER NOT NULL,
-    voteA INTEGER NOT NULL,
+    playerid INTEGER NOT NULL
 );

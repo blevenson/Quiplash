@@ -9,10 +9,12 @@ class Host extends React.Component {
       stage: 0,
       answeredPlayers: [],
       votedPlayers: [],
+      winners: [],
     };
 
     this.handleStartButton = this.handleStartButton.bind(this);
     this.handleResetPlayers = this.handleResetPlayers.bind(this);
+    this.handleDoneButton = this.handleDoneButton.bind(this);
 
   }
 
@@ -32,6 +34,12 @@ class Host extends React.Component {
     })
 
     fetch('/api/v1/resetquestions', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+    })
+
+    fetch('/api/v1/resetvotes', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'same-origin',
@@ -75,6 +83,46 @@ class Host extends React.Component {
         }));
       }
 
+      // Update voted players
+      fetch('/api/v1/votedPlayers', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      })
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+        return response.json();
+      }).then((data) => {
+        this.setState(prevState => ({
+          votedPlayers: data.voters,
+        }));
+      })
+      .catch();
+
+      // Check if all players have voted
+      if(this.state.votedPlayers.length === this.state.players.length && this.state.votedPlayers.length > 0) {
+        // All players have voted, next stage
+        this.setState(prevState => ({
+          stage: 3,
+        }));
+      }
+
+      // Update winners
+      fetch('/api/v1/winners', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      })
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+        return response.json();
+      }).then((data) => {
+        this.setState(prevState => ({
+          winners: data.winners,
+        }));
+      })
+      .catch();
+
   }
 
   handleStartButton() {
@@ -92,6 +140,32 @@ class Host extends React.Component {
 
     this.setState(prevState => ({
           stage: 1,
+          answeredPlayers: [],
+        }));
+
+  }
+
+  handleDoneButton() {
+    fetch('/api/v1/resetanswer', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+    })
+
+    fetch('/api/v1/resetquestions', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+    })
+
+    fetch('/api/v1/resetvotes', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+    })
+
+    this.setState(prevState => ({
+          stage: 0,
           answeredPlayers: [],
         }));
 
@@ -139,15 +213,32 @@ class Host extends React.Component {
         <ul>
             {
             this.state.votedPlayers.map((player, index) =>
-              <li key={index}><p>{player.name}</p></li>)
+              <li key={index}><p>{player}</p></li>)
               }
           </ul>
           </div>);
 
         break;
 
-      default:
-        // code block
+      case 3:
+        // Display winners of votes
+        output = (<div><p>Winners:</p>
+
+        <ul>
+            {
+            this.state.winners.map((question, index) =>
+              <li key={index}>
+                <p>{question.question}</p>
+                <p>{question.ansA + ": \t" + question.votesA}</p>
+                <p>{question.ansB + ": \t" + question.votesB}</p>
+              </li>)
+              }
+          </ul>
+          <button onClick={this.handleDoneButton}>Done</button>
+          </div>);
+
+        break;
+
     }
     return (
       <div className="host">

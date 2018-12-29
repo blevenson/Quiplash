@@ -41,7 +41,12 @@ case $1 in
     ;;
 
   "dump")
+    echo "Players:"
     sqlite3 -batch -line var/quiplash.sqlite3 'SELECT * FROM players'
+    echo "Questions:"
+    sqlite3 -batch -line var/quiplash.sqlite3 'SELECT * FROM questions'
+    echo "Votes:"
+    sqlite3 -batch -line var/quiplash.sqlite3 'SELECT * FROM votes'
     ;;
 
   *)
