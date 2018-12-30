@@ -169,6 +169,14 @@ class Host extends React.Component {
           answeredPlayers: [],
         }));
 
+    // Increment scores
+    fetch('/api/v1/incrementScores', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({"winners": this.state.winners}),
+    })
+
   }
 
 
